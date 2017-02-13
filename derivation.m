@@ -8,22 +8,6 @@ syms Jb1B Jb2B Jb3B Jb1T Jb2T Jb3T mb mt L1 L2 tdata eta etadot gamma
 assume((Jb1B>0) & (Jb2B>0) & (Jb3B>0)&(Jb1T>0)&(Jb2T>0)&(Jb3T>0)&...
     (mb>0)&(mt>0)&(L1>0)&(L2>0));
 
-%Moments of inertia of the Body
-% Jb1B = 7.37e-7; %kg-m^2
-% Jb2B = 5.42e-8;
-% Jb3B = 7.81e-7;
-
-%Moments of inertia of the Tail
-% Jb1T = 2.34e-8; %kg-m^2
-% Jb2T = 2.34e-8;
-% Jb3T = 8.86e-10;
-
-%Masses and Length
-% mb = 3.04e-3; %mass of body, kg
-% L1 = 2.53e-2; %Length of body, m
-% mt = 2.10e-4; %mass of tail, kg
-% L2 = 1.35e-2; %Length of tail, m
-
 %Body and Tail inertia matrix
 JB = [Jb1B,0,0;0,Jb2B,0;0,0,Jb3B];
 JT = [Jb1T,0,0;0,Jb2T,0;0,0,Jb3T];
@@ -63,7 +47,7 @@ ODEsRot = LsysG == 0;
 stateEqs = simplify(ODEsRot);
 stateVars = [psi;theta;phi];
 [Msym, fsym] = massMatrixForm(stateEqs, stateVars);
-Msym = simplify(Msym);
-fsym = simplify(fsym);
+Msym = simplify(Msym); %For checking output
+fsym = simplify(fsym); %For checking output
 M = odeFunction(Msym, stateVars,Jb1B, Jb2B, Jb3B, Jb1T, Jb2T, Jb3T, mb, mt, L1, L2, tdata, eta, etadot, gamma,'file','M');
 f = odeFunction(fsym, stateVars,Jb1B, Jb2B, Jb3B, Jb1T, Jb2T, Jb3T, mb, mt, L1, L2, tdata, eta, etadot, gamma,'file','f');

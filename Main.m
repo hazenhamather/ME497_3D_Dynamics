@@ -25,9 +25,10 @@ tdata = 0:0.0001:0.120;
 T = 0.120;
 
 %Eta, etadot, and gamma
-eta = pi*(1-cos(pi*tdata/T));
-etadot = (pi^2/T)*sin(pi*tdata/T);
-gamma = 0;
+eta = pi*(1-cos(pi*tdata/T)); %radians
+etadot = (pi^2/T)*sin(pi*tdata/T); %radians/s
+gamma = -20*180/pi; %gecko tail not perpendicular with body
+% gamma = 0; %Gecko tail perpendicular to body
 
 %Initial Conditions
 ICs = [0;0;-pi];
@@ -39,9 +40,10 @@ options = odeset('mass', @M, 'abstol',tol,'reltol',tol);
 tms = t*1000;
 
 %Extracting solutions
-psi = y(:,1)*180/pi;
-theta = y(:,2)*180/pi;
-phi = y(:,3)*180/pi;
+psi = y(:,1)*180/pi; %degrees
+theta = y(:,2)*180/pi; %degrees
+phi = y(:,3)*180/pi; %degrees
+% eta = eta*180/pi;
 
 %First subplot showing our Euler angles
 figure(1)
@@ -53,7 +55,7 @@ ylabel('\psi (deg)');
 
 subplot(3,1,2);
 plot(tms,theta);
-axis([0 120 -10 0]);
+axis([0 120 0 10]);
 xlabel('Time (ms)');
 ylabel('\theta (deg)');
 
@@ -62,3 +64,9 @@ plot(tms,phi);
 axis([0 120 -400 -100]);
 xlabel('Time (ms)');
 ylabel('\phi (deg)');
+
+%Animation Function (convert back to radians)
+psi = psi*pi/180;
+theta = theta*pi/180;
+phi = phi*pi/180;
+animate_gecko(psi,theta,phi,eta,gamma,'default');
