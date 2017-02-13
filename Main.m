@@ -36,6 +36,29 @@ ICs = [0;0;-pi];
 tol = 1e-6;
 options = odeset('mass', @M, 'abstol',tol,'reltol',tol);
 [t,y] = ode45(@f,tdata,ICs,options,Jb1B, Jb2B, Jb3B, Jb1T, Jb2T, Jb3T, mb, mt, L1, L2, tdata, eta, etadot, gamma);
-
 tms = t*1000;
-psi = y(:,1) * 180/pi;
+
+%Extracting solutions
+psi = y(:,1)*180/pi;
+theta = y(:,2)*180/pi;
+phi = y(:,3)*180/pi;
+
+%First subplot showing our Euler angles
+figure(1)
+subplot(3,1,1);
+plot(tms,psi);
+axis([0 120 -5 5]);
+xlabel('Time (ms)');
+ylabel('\psi (deg)');
+
+subplot(3,1,2);
+plot(tms,theta);
+axis([0 120 -10 0]);
+xlabel('Time (ms)');
+ylabel('\theta (deg)');
+
+subplot(3,1,3);
+plot(tms,phi);
+axis([0 120 -400 -100]);
+xlabel('Time (ms)');
+ylabel('\phi (deg)');
